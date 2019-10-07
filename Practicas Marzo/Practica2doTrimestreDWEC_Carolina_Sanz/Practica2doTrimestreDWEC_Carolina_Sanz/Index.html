@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Página de Búsqueda de Imágenes</title>
+    <meta charset="utf-8">
+    <script src="jquery/jquery-3.2.1.js"></script>
+
+    <link rel="stylesheet" type="text/css" href="css/estilo.css" media="screen" />
+    <script>
+        var menuVisible = false;
+        var favoritos = new Array();
+        var database;
+        $(document).ready(function () {
+            //esta funcion lo que hace es cambiar mediante un click de pantalla
+            var a = 0;
+            var colores = 0;
+            $("#buscando").click(function () {
+                cambio(1)
+                a--;
+            });
+
+            $("#like").click(function () {
+                cambio(0)
+                a--;
+                creadorDeFavs();
+            });
+            ajustar();
+            $(window).resize(function () {
+                ajustar()
+
+            });
+            llamarAFirebase();
+        });
+
+
+
+
+
+        function cambio(num) {
+            if (num == 0) {
+                $("#pagPrincipal").css("left", "-100%");
+                $("#pagSecundaria").css("left", "0%");
+            } else {
+                $("#pagSecundaria").css("left", "-100%");
+                $("#pagPrincipal").css("left", "0%");
+
+
+            }
+        }
+        function ajustar() {
+            if ($(window).width() < 1000) {
+                $("#pagSecundaria").css("background-color", "pink");
+            } else {
+                $("#pagSecundaria").css("background-color", "blue");
+            }
+        }
+        function pedirFotos() {
+            $.ajax({
+                url: "https://api.flickr.com/services/rest",
+                dataType: "json",
+                data: {
+                    method: "flickr.photos.search",
+                    api_key: "a873b92d3bb2af3a3e73867919f44991",
+                    text: document.getElementById("titulo").value,
+                    format: "json",
+                    nojsoncallback: "1"
+                },
+                contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+                method: "GET",
+                timeout: 1000,
+                success: function (data, textStatus, jqXHR) {
+                    imagen(data.photos.photo);
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    console.log(textStatus);
+                }
+            });
+        }
+        /* function colorearCorazon() {
+             var a = 0;
+             var colores = 0;
+             $("#divCorazon").css("background-color", "red");
+             
+         }
+         */
+        //funcion imagen que le pasa un parametro de "arrImg"
+        function imagen(arrImg) {
+            // en la variable mostrarImagen le paso el id del divImagen
+            var mostrarImagen = document.getElementById("mostrarImagen");
+
+            //Realiza un for para recorrer la medida del array y va incrementando
+            for (index = 0; index < arrImg.length; index++) {
+                // console.log(arrImg[i].farm);
+                var url = "https://farm" + arrImg[index].farm + ".staticflickr.com/" + arrImg[index].server + "/" + arrImg[index].id + "_" + arrImg[index].secret + "_m.jpg";
+                //console.log(url);
+                var imagenDelCorazon = "img/blanco.png";
+                var divImagen = document.createElement("div");
+                divImagen.setAttribute("class", "divImagen");
+                var divCorazon = document.createElement("div");
+                divCorazon.setAttribute("class", "divCorazon");
+                var imagen = document.createElement("img");
+                var imagen2 = document.createElement("img");
+                imagen.setAttribute("src", url);
+                imagen.setAttribute("id", index);
+
+                imagen2.setAttribute("src", imagenDelCorazon);
+                //Aqui declaro el tamaño que quiero que tenga la imagen del corazon
+                imagen2.setAttribute("width", "40px");
+                imagen2.setAttribute("height", "40px");
+                divCorazon.setAttribute("urlMia", url);
+                divCorazon.setAttribute("tituloMia", arrImg[index].title);
+                //aqui meto cada imagen buscada en el divImagen
+                divImagen.appendChild(imagen);
+                divCorazon.appendChild(imagen2);
+                divImagen.appendChild(divCorazon);
+                mostrarImagen.appendChild(divImagen);
+
+
+
+
+            }
+            $(".divCorazon").click(function () {
+                console.log("fav");
+                $(this).css({ 'background-color': 'red' });
+                //cuando haga click y coja el nombre y la url llama ala funcion de conectar a la base de datos
+                var url = $(this).attr("urlMia");
+                var title = $(this).attr("tituloMia");
+                conectarConLaBBDD(url, title);
+
+            });
+
+
+
+
+            //https://farm{farm-id}.staticflickr.com/{server-id}/{id}_{secret}.jpg
+        }
+        //Esta funcion lo que hace es llamar a firebase, con toda la configuracion del sitio creado
+        function llamarAFirebase() {
+            //Creamos el fichero de configuración
+            var config = {
+                apiKey: "AIzaSyDeBHfbeDhe6GCRX0X4XF-VgYKhbbBqDVo",
+                authDomain: "flickrimagenes.firebaseapp.com",
+                databaseURL: "https://flickrimagenes.firebaseio.com/",
+                storageBucket: "bucket.appspot.com"
+
+            };
+            console.log("Dentro de Firebase");
+            firebase.initializeApp(config);
+            database = firebase.database();
+        }
+
+        //En esta funcion nos conectamos a la BBDD del firebase y le pasamos la url y el titulo recogido anteriormente
+        function conectarConLaBBDD(url, title) {
+            if (title == "" || title == null || title == " ") {
+                title = "Sin Titulo";
+
+            }
+            console.log(url);
+            console.log(title);
+            //Obtenemos la referencia a la base de datos (Realtime Database)
+            database = firebase.database();
+            //Obtenemos una referencia la rama películas
+            var urlObtenida = database.ref("/imagenesfav/" + title).set({
+                url: url,
+                title: title
+            });
+        }
+        function creadorDeFavs() {
+            database = firebase.database();
+            var ImagenLike = database.ref("/imagenesfav");
+            ImagenLike.on("value", function (snapshot) {
+                console.log(snapshot);
+                mostrarFavoritos(snapshot);
+            });
+        }
+        //funcion que sirve para recoger las imagenes que se guardan en la base de datos como favoritos
+        function mostrarFavoritos(snapshot) {
+            console.log("dentro de mostrarFavoritos");
+            // en la variable mostrarImagen le paso el id del divImagen
+            var mostrarImagen = document.getElementById("pagSecundaria");
+            //limpiar el html para que cada vez que se pulse se muentren solo las fotos de la BBDD
+            //y no se repitan
+            mostrarImagen.innerHTML=" ";
+            //Realiza un for para recorrer la medida del array y va incrementando
+            snapshot.forEach(favoritoGuardado => {
+
+
+                // console.log(arrImg[i].farm);
+                var divImagen = document.createElement("div");
+                divImagen.setAttribute("class", "divImagen");
+                var tituloImagen = document.createElement("p");
+                var imagen = document.createElement("img");
+
+                imagen.setAttribute("src", favoritoGuardado.val().url);
+                var texto = "";
+                if (favoritoGuardado.val().title == "" || favoritoGuardado.val().title == null || favoritoGuardado.val().title == " ") {
+                    texto = document.createTextNode("Sin Titulo");
+
+                } else {
+                    texto=document.createTextNode(favoritoGuardado.val().title);
+                }
+
+                //Aqui declaro el tamaño que quiero que tenga la imagen del corazon
+
+
+                //aqui meto cada imagen buscada en el divImagen
+                divImagen.appendChild(imagen);
+                mostrarImagen.appendChild(divImagen);
+                tituloImagen.appendChild(texto);
+                mostrarImagen.appendChild(tituloImagen);
+
+            });
+        }
+
+
+    </script>
+</head>
+
+<body>
+    <div>
+        <input type="button" id="buscando" class="btn" value="Busqueda de Imagenes" id="btnBusqueda">
+        <br>
+        <br>
+        <input type="button" id="like" class="btn" value="Favoritos" id="btnFav">
+    </div>
+    <div id="pagPrincipal">
+        <H1>Búsqueda de imagenes</H1>
+        <input type="text" name="titulo" id="titulo" placeholder="Imagen a buscar" />
+        <input type="button" class="btnBuscar" value="Buscar" onclick="pedirFotos()">
+
+        <div id="mostrarImagen"></div>
+        <br>
+    </div>
+    <div id="pagSecundaria">
+        <H1>Favoritos</H1>
+    </div>
+
+
+
+</body>
+
+<script src="https://www.gstatic.com/firebasejs/5.8.1/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/5.8.1/firebase-auth.js"></script>
+<script src="https://www.gstatic.com/firebasejs/5.8.1/firebase-database.js"></script>
+
+</html>

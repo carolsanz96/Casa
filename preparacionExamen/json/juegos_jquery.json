@@ -1,0 +1,42 @@
+{
+	"videojuegos": 
+	[
+		{
+			"portada":"https://d8mkdcmng3.imgix.net/f18c/pc-and-video-games-games-ps4-god-of-war.png?auto=format&bg=0FFF&fit=fill&h=600&q=100&w=600&s=662405d265d55e4a5f7d6446c5a9a40e",
+			"titulo":"FORNITE",
+			"plataforma":"PS4",
+			"precio":"65",
+			"puntos":"4"
+		},
+		{
+			"portada":"https://d8mkdcmng3.imgix.net/f18c/pc-and-video-games-games-ps4-god-of-war.png?auto=format&bg=0FFF&fit=fill&h=600&q=100&w=600&s=662405d265d55e4a5f7d6446c5a9a40e",
+			"titulo":"COD",
+			"plataforma":"XBOX ONE",
+			"precio":"45.90",
+			"puntos":"4"
+		},
+		{
+			"portada":"https://d8mkdcmng3.imgix.net/f18c/pc-and-video-games-games-ps4-god-of-war.png?auto=format&bg=0FFF&fit=fill&h=600&q=100&w=600&s=662405d265d55e4a5f7d6446c5a9a40e",
+			"titulo":"COD",
+			"plataforma":"XBOX ONE",
+			"precio":"45.90",
+			"puntos":"4"
+		},
+		{
+			"portada":"https://d8mkdcmng3.imgix.net/f18c/pc-and-video-games-games-ps4-god-of-war.png?auto=format&bg=0FFF&fit=fill&h=600&q=100&w=600&s=662405d265d55e4a5f7d6446c5a9a40e",
+			"titulo":"COD",
+			"plataforma":"XBOX ONE",
+			"precio":"45.90",
+			"puntos":"4"
+		},
+		{
+			"portada":"https://d8mkdcmng3.imgix.net/f18c/pc-and-video-games-games-ps4-god-of-war.png?auto=format&bg=0FFF&fit=fill&h=600&q=100&w=600&s=662405d265d55e4a5f7d6446c5a9a40e",
+			"titulo":"COD",
+			"plataforma":"XBOX ONE",
+			"precio":"45.90",
+			"puntos":"4"
+		}								
+	]
+}
+
+	

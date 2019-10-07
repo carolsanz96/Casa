@@ -1,0 +1,15 @@
+<root>
+    <provincia nombre="Madrid">
+        <localidad capital="false">Alcorcon</localidad>
+        <localidad capital="false">Mostoles</localidad>
+        <localidad capital="false">Fuenlabrada</localidad>
+        <localidad capital="false">Boadilla del Monte</localidad>
+        <localidad capital="true">Madrid</localidad>
+    </provincia>        
+    <provincia nombre="Caceres">
+        <localidad capital="true">Caceres</localidad>
+        <localidad capital="false">Trujillo</localidad>
+        <localidad capital="false">Plasencia</localidad>
+        <localidad capital="false">Navalmoral de la Mata</localidad>
+    </provincia>        
+</root>

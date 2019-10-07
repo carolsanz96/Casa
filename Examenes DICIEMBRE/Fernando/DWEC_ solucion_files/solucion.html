@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<!-- saved from url=(0105)http://aulavirtual.juanxxiii.net/moodle/pluginfile.php/24180/mod_resource/content/0/solucion.html?embed=1 -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Solución Examen 1T</title>
+    <script>
+    var hotel; 
+    function cargar(){
+        var url = "https://fpaniaguaformacion.github.io/habitaciones.json";
+        var request = new XMLHttpRequest();
+        request.overrideMimeType("text/plain");
+        request.open("GET", url, true);
+        request.send(null);
+        request.onreadystatechange = function(){
+            if (request.readyState == 4) {
+                if (request.status == 200){
+                    var info = request.responseText;
+                    var json = JSON.parse(info);
+                    hotel = json.hotel;
+                } else {
+                    alert("HA OCURRIDO UN ERROR");
+                }
+            }
+        }
+    }
+    function buscar(){
+        var capacidad = document.getElementById("capacidad").value;
+        var servicio = document.getElementById("tsh").checked;
+        var mascotas = document.getElementById("am").checked;
+        console.log(hotel);
+        generaTabla();
+        generarFila("Número de Habitación", "Capacidad", "Tiene servicio de habitaciones", "Admite mascotas");
+        hotel.forEach(habitacion => {
+            if ((Number(habitacion.capacidad) >= Number(capacidad)) && (habitacion.tSH == servicio) && (habitacion.mascotas == mascotas)){
+                generarFila(habitacion.numero, habitacion.capacidad, habitacion.tSH, habitacion.mascotas);
+            }
+        });
+    }
+
+    function generaTabla(){
+        var cabecera = document.createElement("table");
+        cabecera.setAttribute("id","tResultado");
+        document.getElementById("resultado").innerHTML="";
+        document.getElementById("resultado").appendChild(cabecera);
+    }
+    function generarFila(numero, capacidad, servicio, mascotas){
+        var tabla = document.getElementById("tResultado");
+        var fila = document.createElement("tr");
+        var col1 = document.createElement("td");
+        var col2 = document.createElement("td");
+        var col3 = document.createElement("td");
+        var col4 = document.createElement("td");
+        var txt1 = document.createTextNode(numero);
+        var txt2 = document.createTextNode(capacidad);
+        var txt3 = document.createTextNode(servicio);
+        var txt4 = document.createTextNode(mascotas);
+
+        col1.appendChild(txt1);
+        col2.appendChild(txt2);
+        col3.appendChild(txt3);
+        col4.appendChild(txt4);
+        fila.appendChild(col1);
+        fila.appendChild(col2);
+        fila.appendChild(col3);
+        fila.appendChild(col4);
+        tabla.appendChild(fila);
+    }
+    
+    </script>
+</head>
+<body onload="cargar()">
+    <div id="formulario">
+        <label for="capacidad">Capacidad</label>
+        <select name="capacidad" id="capacidad">
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+            <option value="6">6</option>
+            <option value="7">7</option>
+            <option value="8">8</option>
+        </select>
+        <label for="tsh">Servicio de habitaciones</label>
+        <input type="checkbox" name="tsh" id="tsh">
+        <label for="am">Admite mascotas</label>
+        <input type="checkbox" name="am" id="am">
+        <input type="button" value="Buscar" onclick="buscar()">
+    </div>
+    <div id="resultado">
+
+    </div>
+
+</body></html>

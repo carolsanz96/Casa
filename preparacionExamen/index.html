@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="js/funciones.js"></script>
+    <script src="jquery/jquery-3.3.1.min.js"></script>
+    <link rel="stylesheet" href="css/estilos.css">
+</head>
+<body onload="inicializar()">
+    <input type="text" id="plataforma" placeholder="Plataforma">
+    <input type="text" id="titulo" placeholder="titulo">
+    <input type="number" id="precio" placeholder="precio">
+    <input type="button" value="Agregar" onclick="realizarLlamada()">
+    <input type="button" value="Leer" onclick="conectarFirebase()">
+
+    <div id="juegos">
+
+    </div>
+</body>
+<script src="https://www.gstatic.com/firebasejs/5.5.2/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/5.5.2/firebase-auth.js"></script>
+<script src="https://www.gstatic.com/firebasejs/5.5.2/firebase-database.js"></script>
+</html>

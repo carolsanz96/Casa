@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="es-Es">
+<head>
+	<title>Examen Jun'17</title>
+	<meta http-equiv="language" content="es-ES"/>
+	<meta http-equiv="keywords" content="Examen LM, 2017"/>
+	<style type="text/css">
+		.negrita{
+			font-weight: bold;
+		}
+		.deshabilitado{
+			disabled:true;
+		}
+		.oculto{
+			display: none;
+		}
+		.img_normal{
+			width: 100px;
+			height: 100px;
+		}
+		.button{
+			   margin: 20px 173px;
+		}
+
+		.doble{
+			width: 200px;
+			height: 200px;
+		}
+
+		.seleccionado{
+			background: #A9D0F5;
+		}
+
+		.noseleccionado{
+			background: white;
+		}
+
+	</style>
+	<script type="text/javascript">
+
+		function doble(){
+			var imagen = document.getElementById("imagen");
+			imagen.className="doble";
+		}
+
+		function normalt(){
+			var imagen = document.getElementById("imagen");
+			imagen.className="img_normal";
+		}
+
+		function seleccionado(){
+
+			var elementos = document.getElementsByTagName("input");
+
+			var input = document.activeElement.name;
+			
+			for(i=0; i < elementos.length; i++){
+				if(elementos[i].className != "seleccionado" && input==elementos[i].name){
+					elementos[i].className = "seleccionado";
+				}else{
+					elementos[i].className = "noseleccionado";
+				}
+			}
+		}
+
+		function nombreUnico(){
+			var nombre = document.getElementById("usu").value;
+			var sinEspacios = "";
+
+			for(var i=0; i<nombre.length; i++){
+				if(nombre[i]===" "){
+					break;
+				}else{
+					sinEspacios=sinEspacios+nombre[i];
+				}
+			}
+
+			document.getElementById("usu").value=sinEspacios;
+		}
+
+		function maximo(letras){ 
+			var nombre = document.getElementById("usu");
+
+    		if(nombre.value.length > letras ){ 
+        		return false; 
+    		}else{ 
+        		return true; 
+    		} 
+    
+		}
+
+		function comprobacion(){
+			var dni = document.getElementById("dni");
+
+			var numero = [0,1,2,3,4,5,6,7,8,9];
+
+			if(dni.value.length == 9){
+				
+
+
+			}else{
+				alert("Ha ocurrido un error con el DNI. Introduzca datos correctos.");
+				document.getElementById("dni").value="";
+			}
+
+		}
+
+		function contraseña(){
+
+			var contraseña1 = document.getElementById('password1');
+    		var contraseña2 = document.getElementById('password2');
+
+    		if(contraseña1.value!=="" && contraseña2.value!==""){
+	        	if(contraseña1.value !== contraseña2.value){
+	            	alert("Los contraseñas deben coincidir");
+        		}
+    		}
+
+		}
+
+		function administrador(){
+			var tipo = document.getElementsByName("tipo");
+			var id = document.getElementById("id_admin");
+
+			for(var i=0; i<tipo.length;i++){
+				if (tipo[i].value == 3){
+					id.disabled=false;
+				}else{
+					id.disabled=true;
+				}
+			}
+		}
+
+		function crearlista(){
+			var condiciones = document.getElementById("condiciones");
+			var privacidad = document.getElementById("privacidad");
+			var boton = document.getElementById("submit")
+
+			if(condiciones.checked==true && privacidad.checked==true){
+				boton.className="mostrar"
+			}else if (condiciones.checked==false || privacidad.checked==false){
+				boton.className="oculto"
+			}
+		}
+
+		function crear(){
+			var li = document.createElement("li");
+			var texto = document.createTextNode("Texto de la lista");
+			li.appendChild(texto);
+			
+			var ol = document.createElement("ol");
+			ol.appendChild(li);
+
+			var primero=document.getElementById("lista");
+			primero.appendChild(ol);
+		}
+	
+	</script>
+</head>
+<body>
+	<blockquote>
+		<table>
+			<form method="post" autocomplete="on" enctype="multipart/form-data" id="formulario_ex" name="formulario_ex"/> 
+				<thead>
+					<th colspan="4"><h1>Formulario de alta</h1></th>
+				</thead>
+				<tbody>
+					<tr>
+						<td colspan="3">
+							<label class="negrita">Usuario</label>
+						</td>
+						<td rowspan="4">
+							<img id="imagen" name="imagen" class="img_normal" alt="Imagen de usuario" src="imagen.png" onmouseover="doble();" onmouseout="normalt();"/>
+						</td>
+					</tr>
+					<tr>
+						<td colspan="3">
+							<input name="usu" id="usu" type="text" placeholder="Introduzca su usuario" onclick="seleccionado()" onblur="nombreUnico();" onkeypress="return maximo(9);"/>
+						</td>
+					</tr><tr></tr>
+					<tr>
+						<td colspan="3">
+							<label class="negrita">DNI</label>
+						</td>
+					</tr>
+					<tr>
+						<td colspan="3">
+							<input name="dni" id="dni" type="text" placeholder="Introduzca su DNI" onclick="seleccionado()" onblur="comprobacion(); return false;"/>
+						</td>
+					</tr>
+					<tr>
+						<td colspan="4">
+							<label class="negrita">Contraseña</label>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<input name="password1" id="password1" type="password" placeholder="Introduzca su password" onclick="seleccionado()" onchange="contraseña(); return false;"/>
+						</td>
+						<td>
+							<input name="password2" id="password2" type="password" placeholder="Repita su password" onclick="seleccionado()" onchange="contraseña(); return false;"/>
+						</td>
+					</tr>
+					<tr><td colspan="4"><hr></td></tr>	
+					<tr>
+						<td colspan="4">
+							<label class="negrita">Tipo de Usuario </label>
+						</td>
+					</tr>
+					<tr>
+						<td><select id="tipo" name="tipo" onchange="administrador();">
+							<option value="0"> Selecciona una opcion </option>
+							<option value="1"> Usuario </option>
+							<option value="2"> Moderador </option>
+							<option value="3"> Administrador </option>
+						</select></td>
+						<td colspan="3">
+							<label class="negrita"> Id de administrador </label>
+							<input type="textarea" name="id_admin" id="id_admin" disabled="disabled"/>  </td>
+						</td>
+					</tr>
+					<tr><td colspan="4"><hr></td></tr>					
+					<tr>
+						<td>
+							<input type="checkbox" value="0" name="condiciones" id="condiciones" onclick="crearlista();"/>
+							<label> Acepto las condiciones de uso </label>
+						</td>
+						<td>
+							<input type="checkbox" value="1" name="privacidad" id="privacidad" onclick="crearlista();"/>
+							<label> Acepto la política de privacidad </label>
+						</td>
+					</tr>
+					<tr><td colspan="4"><hr></td></tr>
+				</tbody>
+				<tfoot>
+				</tfoot>
+			</form>
+		</table>
+		
+		<input type="button" id="submit" value="Crear lista" class="button oculto"  onclick="crear();"/> 
+		
+		<div id="lista">
+		</div>
+		
+	</blockquote>
+
+</body>
+</html>

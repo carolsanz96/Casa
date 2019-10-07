@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Examen DWEC FINAL Hector Fresneda</title>
+    <script src="jquery-3.3.1/jquery-3.3.1.min.js"></script>
+    <script>
+        var request = new XMLHttpRequest();
+        var comidas;
+        //Funcion que realiza la llamada ajax y recoge el JSON devuelto
+        function ejecutarLlamadaAjax() {
+            //se ejecuta cuando cambia el estado
+            request.onreadystatechange = function () {
+               
+                // si la comunicacion ha finalizado y ha terminado bien, se muestra lo que ha devuelto
+                if (request.readyState == 4 && request.status == 200) {
+
+                    comidas = JSON.parse(request.responseText);
+                   
+                    crearHtml(comidas);
+
+                }
+            }
+            request.overrideMimeType("text/plain");
+            request.open("GET", "https://fpaniaguaformacion.github.io/datos_proyecto_final.json");
+            request.send(null);
+        }
+        //Esta parte solo se ejecuta cuando la página esta cargada completamente
+        $(document).ready(function () {
+            ejecutarLlamadaAjax();
+            //leemos la variable de sesion, local
+            leer();
+            //Binding del boton de buscar
+            $("#bBuscar").click(function(){
+            var strBusqueda=$("#cajaBusqueda").val();
+            if(strBusqueda.length==0||strBusqueda==" "||strBusqueda=="  "||strBusqueda=="   "||strBusqueda=="    "){
+                alert("No puede dejar la caja de busqueda vacia");
+            }else{
+                crearHtml(comidas);
+                oculta(strBusqueda,comidas);
+                guarda(strBusqueda);}
+            });
+
+        });
+        //Funcion que asigna a la caja de texto el ultimo texto buscado
+        function leer(){
+            $("#cajaBusqueda").val(localStorage["busqueda"]);
+        }
+        //Funcion que guarda en la variable de sesion local el texto buscado
+        function guarda(busqueda){
+            localStorage["busqueda"]=busqueda;
+           
+            
+            
+        }
+        //funcion que crea la tabla a mostrar a raiz del json pasado por parametro
+        function crearHtml(comidas) {
+           
+            var divMostrar=document.getElementById("mostrar");
+            var table=document.createElement("table");
+            table.setAttribute("border","1");
+
+            divMostrar.innerHTML="";
+
+            for(var i =0;i<comidas.Entrantes.length;i++){
+                var th2 = document.createElement("th");
+                var tr = document.createElement("tr");
+                var textTD;
+                var img=document.createElement("img");
+                img.setAttribute("width","300");
+               var textTH=document.createTextNode("Entrante "+ (i+1));
+               th2.appendChild(textTH);
+               tr.appendChild(th2);
+               tr.setAttribute("id","entrante"+i)
+                var tdNombre =document.createElement("td");
+                var tdDesc =document.createElement("td");
+                var tdPrecio =document.createElement("td");
+                var tdimg =document.createElement("td");
+                td=document.createTextNode(comidas.Entrantes[i].Plato.Nombre);
+                tdNombre.appendChild(td);
+                tr.appendChild(tdNombre);
+
+                td=document.createTextNode(comidas.Entrantes[i].Plato.Descripcion);
+                tdDesc.appendChild(td);
+                tr.appendChild(tdDesc);
+
+                td=document.createTextNode(comidas.Entrantes[i].Plato.Precio);
+                tdPrecio.appendChild(td);
+                tr.appendChild(tdPrecio);
+
+              img.setAttribute("src",comidas.Entrantes[i].Plato.Imagen) ;
+              tdimg.appendChild(img);
+                tr.appendChild(tdimg);
+                
+               table.appendChild(tr);
+            }
+
+            for(var i =0;i<comidas.Pizzas.length;i++){
+                var th2 = document.createElement("th");
+                var tr = document.createElement("tr");
+                var textTD;
+                var img=document.createElement("img");
+                img.setAttribute("width","300");
+               var textTH=document.createTextNode("Pizza "+ (i+1));
+               th2.appendChild(textTH);
+               tr.appendChild(th2);
+               tr.setAttribute("id","pizzas"+i)
+                var tdNombre =document.createElement("td");
+                var tdDesc =document.createElement("td");
+                var tdPrecio =document.createElement("td");
+                var tdimg =document.createElement("td");
+                td=document.createTextNode(comidas.Pizzas[i].Plato.Nombre);
+                tdNombre.appendChild(td);
+                tr.appendChild(tdNombre);
+
+                td=document.createTextNode(comidas.Pizzas[i].Plato.Descripcion);
+                tdDesc.appendChild(td);
+                tr.appendChild(tdDesc);
+
+                td=document.createTextNode(comidas.Pizzas[i].Plato.Precio);
+                tdPrecio.appendChild(td);
+                tr.appendChild(tdPrecio);
+
+              img.setAttribute("src",comidas.Pizzas[i].Plato.Imagen) ;
+              tdimg.appendChild(img);
+                tr.appendChild(tdimg);
+                
+               table.appendChild(tr);
+            }
+
+            for(var i =0;i<comidas.Postres.length;i++){
+                var th2 = document.createElement("th");
+                var tr = document.createElement("tr");
+                var textTD;
+                var img=document.createElement("img");
+                img.setAttribute("width","300");
+               var textTH=document.createTextNode("Postre "+ (i+1));
+               th2.appendChild(textTH);
+               tr.appendChild(th2);
+               tr.setAttribute("id","postre"+i)
+                var tdNombre =document.createElement("td");
+                var tdDesc =document.createElement("td");
+                var tdPrecio =document.createElement("td");
+                var tdimg =document.createElement("td");
+                td=document.createTextNode(comidas.Postres[i].Plato.Nombre);
+                tdNombre.appendChild(td);
+                tr.appendChild(tdNombre);
+
+                td=document.createTextNode(comidas.Postres[i].Plato.Descripcion);
+                tdDesc.appendChild(td);
+                tr.appendChild(tdDesc);
+
+                td=document.createTextNode(comidas.Postres[i].Plato.Precio);
+                tdPrecio.appendChild(td);
+                tr.appendChild(tdPrecio);
+
+              img.setAttribute("src",comidas.Postres[i].Plato.Imagen) ;
+              tdimg.appendChild(img);
+                tr.appendChild(tdimg);
+                
+               table.appendChild(tr);
+            }
+            divMostrar.appendChild(table);
+        }
+    //Funcion que oculta los elementos que contengan el texto pasado por parametro que el usuario mete en la caja de texto
+    function oculta(strBusqueda,comidas){
+        for(var i =0;i<comidas.Entrantes.length;i++){
+            var str=comidas.Entrantes[i].Plato.Descripcion;
+            if(str.includes(strBusqueda)){
+                $("#entrante"+i).css("display","none");
+            }
+        }
+        for(var i =0;i<comidas.Pizzas.length;i++){
+            var str=comidas.Pizzas[i].Plato.Descripcion;
+            if(str.includes(strBusqueda)){
+                $("#entrante"+i).css("display","none");
+            }
+        }
+        for(var i =0;i<comidas.Postres.length;i++){
+            var str=comidas.Postres[i].Plato.Descripcion;
+            if(str.includes(strBusqueda)){
+                $("#entrante"+i).css("display","none");
+            }
+        }
+    }
+    </script>
+
+    <link rel="stylesheet" href="css/estilo.css">
+</head>
+
+<body>
+    <div id="buscar">
+        <input type="text" id="cajaBusqueda">
+        <input type="button" value="Buscar" id="bBuscar">
+
+    </div>
+    <div id="mostrar">
+
+    </div>
+</body>
+
+</html>

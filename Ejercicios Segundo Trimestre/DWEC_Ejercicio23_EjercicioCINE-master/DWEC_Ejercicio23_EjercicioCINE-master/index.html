@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="css/estilo.css">
+    <title>(Ejemplo Ajax)</title>
+    <script>
+        function ejecutarLlamadaAjax(){
+            var request = new XMLHttpRequest();
+            var titulo = document.querySelector("#titulo").value;
+            request.onreadystatechange=function(){
+                if(request.readyState==4){
+                    if(request.status==200){
+                        var datos = request.responseText;
+                        var jsonDatos = JSON.parse(datos);
+                        procesarRespuesta(jsonDatos);
+                    } else {
+                        console.log("ERROR");
+                    }
+                } 
+            }
+            request.overrideMimeType("text/plain");
+            request.open("GET","http://www.omdbapi.com?apikey=MI_APIKEY&t=" + titulo, true);
+            request.setRequestHeader('Content-type',
+                'application/x-www-form-urlencoded');
+            request.send();
+        }
+        function procesarRespuesta(datos){
+            var h1Titulo = document.createElement("H1");
+            var textoTitulo = document.createTextNode(datos.Title);
+            h1Titulo.appendChild(textoTitulo);
+            document.querySelector("#divResultado").appendChild(h1Titulo);
+            var imgPoster = document.createElement("img");
+            imgPoster.setAttribute("src",datos.Poster);
+            document.querySelector("#divResultado").appendChild(imgPoster);
+            
+        }
+    </script>
+</head>
+<body>
+    <input type="text" id="titulo" placeholder="Título">
+    <input type="button" value="Cargar" onclick="ejecutarLlamadaAjax()">
+    <div id="divResultado">
+
+    </div>
+</body>
+</html>

@@ -1,0 +1,41 @@
+{
+	"series":
+	[
+	{
+		"titulo":"The Good Doctor",
+		"year":2017,
+		"genero":"Drama",
+		"reparto":[
+			{"actor":"Freddie Highmore"},
+			{"actor":"Nicholas Gonzalez"}
+		],
+		"trailer":"https://youtu.be/fYlZDTru55g",
+		"poster":"http://images.vertele.eldiario.es/2018/06/04/noticias/Telecinco-ficcion-USA-The-despues_2018508193_9321622_660x371.png"
+	},
+	{
+		"titulo":"Peaky blinder",
+		"year":2013,
+		"genero":"Drama",
+		"reparto":[
+			{"actor":"Cillian Murphy"},
+			{"actor":"Greg Brenman"},
+			{"actor":"Jamie Glazebrook"},
+			{"actor":"Steven Knight"}
+		],
+		"trailer":"https://youtu.be/jMMUgnf2E9c",
+		"poster":"http://digitalspyuk.cdnds.net/17/46/980x490/landscape-1510765603-14268154-high-res-peaky-blinders-iv.jpg"
+	},
+	{
+		"titulo":"The Good Place",
+		"year":2016,
+		"genero":"Comedia",
+		"reparto":[
+			{"actor":"Jameela Jamil"},
+			{"actor":"Kristen Bell"},
+			{"actor":"Ted Danson"}
+		],
+		"trailer":"https://youtu.be/RfBgT5djaQw",
+		"poster":"https://pics.filmaffinity.com/the_good_place_tv_series-605671019-large.jpg"
+	}
+	]
+}
